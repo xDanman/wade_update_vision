@@ -1939,6 +1939,16 @@ class MaskRCNN():
             anchors = np.broadcast_to(anchors, (config.BATCH_SIZE,) + anchors.shape)
             # A hack to get around Keras's bad support for constants
             anchors = KL.Lambda(lambda x: tf.Variable(anchors), name="anchors")(input_image)
+
+            class ConstLayer(tf.keras.layers.Layer):
+                def __init__(self, x, name=None):
+                    super(ConstLayer, self).__init__(name=name)
+                    self.x = tf.Variable(x)
+
+                def call(self, input):
+                    return self.x
+
+            anchors = ConstLayer(anchors, name="anchors")(input_image)
         else:
             anchors = input_anchors
 

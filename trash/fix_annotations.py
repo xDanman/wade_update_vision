@@ -85,7 +85,8 @@ for subset in ["train", "val"]:
         for key_file in annotations:
             image_file = annotations[key_file]
             try:
-                image_path = os.path.join(dataset_dir, image_file.get('filename'))
+                image_path = os.path.join(dataset_dir_1, image_file.get('filename'))
+                assert os.path.exists(image_path)
                 base_keys[subset]["_via_img_metadata"][key_file] = image_file
                 print(image_path)
     
